@@ -1,0 +1,30 @@
+package "vnoise"
+version "0.1"
+purpose "Very Noise fractal noise generation"
+description "Generates 8-bit or 16-bit greyscale PNG's of coherent noise. A noise function determines what kind of base noise is used. Several of these noise functions (called octaves) can then be added together to create more detailed noise. Finally, this noise is projected onto an image using a transform function."
+
+option "output" o "Output file" string typestr="filename" required
+option "width" w "The width of the output image" int optional default="512"
+option "height" h "The height of the output image" int optional default="512"
+option "depth" d "The bit-depth of the grayscale png output file. May be either 8 or 16" int optional default="16"
+option "seed" s "The seed for the pseudo-random noise generator \
+Equal seeds along with equal settings will produce equal results" int optional
+
+option "octaves" n "Number of octaves of noise" int default="1" optional
+option "persistence" p "Determines the amplitude of each successive octave as a product of the last. Eg. a persistence of 0.5 will make each octave have half the amplitude of the last" double optional default="0.5"
+option "lacunarity" l "Determines the frequency of each successive octave as a product of the last. Eg. a lacunarity of 2 will make each octave have double the frequency of the last" double optional default="2"
+option "frequency" f "Base frequency. A higher value will result in smaller, but more abundant, noise features." double optional default="5"
+option "ridged" r "Uses the absolute value of the noise function" optional
+option "invert" i "Inverts the noise function" optional
+
+defgroup "transform" groupdesc="Transform functions. Determines how the noise is projected onto the image."
+groupoption "line" L "Transforms the x-value into a straight line of 1D noise" group="transform"
+groupoption "plane" P "No transformation. Default transform function." group="transform"
+groupoption "plane3" - "Transforms the image into a plane through 3D noise." group="transform"
+groupoption "plane4" - "Transforms the image into a plane through 4D noise." group="transform"
+groupoption "cylinder" C "Transforms the image into a 3D cylinder, making the image tileable along the x-axis." group="transform"
+groupoption "tileable" T "Transforms the image into two 4D orthogonal circles, making the 2D image tileable." group="transform"
+groupoption "sphere" S "3D Sphere transformation" group="transform"
+
+defgroup "noise" groupdesc="Base noise functions."
+groupoption "simplex" X "Fast coherent noise. Default noise function." group="noise"
